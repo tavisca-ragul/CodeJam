@@ -1,0 +1,281 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+void decimal(char n[], char conversionType) {
+	long long int a, b, c, d, len, hi = 0, i;
+	char t[1000], hexa[1000];
+	strcpy(t, n);
+	len = strlen(t);
+	c = 1;
+	b= 0;
+	a = 0;
+	while(len--) {
+		a = (t[len] - 48) * c;
+		b = a + b;
+		c *= 10;
+	}
+	d = b;
+	a = 0;
+	b = 0;
+	c = 1;
+	if(conversionType == 'b') {
+		while(d) {
+			a = d % 2;
+			b += a * c;
+			//printf("\n%lld %lld %lld %lld ", a, d % 2, d, b);
+			c *= 10;
+			d /= 2;
+		}
+	} else if(conversionType == 'h') {
+		while(d) {
+			a = d % 16;
+			if(a > 9) {
+				hexa[hi++] = a % 9 + 64;
+			} else {
+				hexa[hi++] = a + 48;
+			}
+			//printf("\n%lld %lld %lld %lld ", a, d % 2, d, b);
+			d /= 16;
+		}
+		hexa[hi] = '\n';
+		printf("After Converting : ");
+		while(hi--)
+			printf("%c", hexa[hi]);
+		return;
+	} else if(conversionType == 'o') {
+		while(d) {
+			a = d % 8;
+			b += a * c;
+			//printf("\n%lld %lld %lld %lld ", a, d % 8, d, b);
+			c *= 10;
+			d /= 8;
+		}
+	}
+	printf("After Converting : %lld", b);
+}
+
+void binary(char n[], char conversionType) {
+	long long int a, b, c, len, i, d, e, f, hi = 0;
+	char t[1000], hexa[1000];
+	strcpy(t, n);
+	len = strlen(t);
+	a = 0;
+	b = 0;
+	c = 1;
+	if(conversionType == 'd') {
+		while(len--) {
+			a = (t[len] - 48) % 10;
+			b += a * c;
+			//printf("\n%lld %lld %c %lld ", a, (t[len] - 48) % 10, t[len], b);
+			c *= 2;
+		}
+		printf("\nAfter Converting : %lld", b);
+	} else if(conversionType == 'h') {
+		len = len - 1;
+		while(len >= 0) {
+			for(i = 0, d= 0, e = 0, f = 1; i < 4 && len >= 0; i++, len--) {
+				d = (t[len] - 48);
+				e += d * f;
+				//printf("\n%lld %lld %c %lld %lld ", d, (t[len] - 48), t[len], e, len);
+				f *= 2;
+			}
+			if(e > 9)
+				hexa[hi++] = (e % 9) + 64;
+			else 
+				hexa[hi++] = e + 48;
+		}	
+		printf("After Converting : ");
+		while(hi--) 
+			printf("%c", hexa[hi]);
+	} else if(conversionType == 'o') {
+		len = len - 1;
+		while(len >= 0) {
+			for(i = 0, d= 0, e = 0, f = 1; i < 3 && len >= 0; i++, len--) {
+				d = (t[len] - 48);
+				e += d * f;
+				//printf("\n%lld %lld %c %lld %lld ", d, (t[len] - 48), t[len], e, len);
+				f *= 2;
+			}
+			a = e * c;
+			b += a;
+			c *= 10;
+		}	
+		printf("After Converting : %lld", b);
+	}
+}
+
+void octa(char n[], char conversionType) {
+	long long int a, b, c, d, len, hi = 0, ti = 0, e, f, i;
+	char t[1000], hexa[1000], temp[1000];
+	strcpy(t, n);
+	len = strlen(t);
+	a = 0;
+	b = 0;
+	c = 1;
+	if(conversionType == 'd') {
+		while(len--) {
+			a = (t[len] - 48);
+			b += a * c;
+			//printf("\n%lld %lld %c %lld %lld ", a, (t[len] - 48), t[len], b, c);
+			c *= 8;
+		}
+	} else if(conversionType == 'b') {
+		while(len--) {
+			a = (t[len] - 48);
+			b += a * c;
+			//printf("\n%lld %lld %c %lld %lld ", a, (t[len] - 48), t[len], b, c);
+			c *= 8;
+		}
+		d = b;
+		a = 0;
+		b = 0;
+		c = 1;
+		while(d) {
+			a = d % 2;
+			b += a * c;
+			//printf("\n%lld %lld %lld %lld ", a, d % 2, d, b);
+			c *= 10;
+			d /= 2;
+		}
+	} else if(conversionType == 'h') {
+		while(len--) {
+			a = (t[len] - 48);
+			b += a * c;
+			//printf("\n%lld %lld %c %lld %lld ", a, (t[len] - 48), t[len], b, c);
+			c *= 8;
+		}
+		d = b;
+		a = 0;
+		b = 0;
+		c = 1;
+		while(d) {
+			a = d % 2;
+			b += a * c;
+			//printf("\n%lld %lld %lld %lld ", a, d % 2, d, b);
+			c *= 10;
+			d /= 2;
+			ti++;
+		}
+		len = ti - 1;
+		while(ti--) {
+			temp[ti] = (b % 10) + 48;
+			//printf("%lld", b%10);
+			b /= 10;
+		}
+		temp[len+1] = '\n';
+		//printf("%s", temp);
+		while(len >= 0) {
+			for(i = 0, d= 0, e = 0, f = 1; i < 4 && len >= 0; i++, len--) {
+				d = (temp[len] - 48);
+				e += d * f;
+				//printf("\n%lld %lld %c %lld %lld ", d, (t[len] - 48), t[len], e, len);
+				f *= 2;
+			}
+			if(e > 9)
+				hexa[hi++] = (e % 9) + 64;
+			else 
+				hexa[hi++] = e + 48;
+		}	
+		printf("After Converting : ");
+		while(hi--) 
+			printf("%c", hexa[hi]);
+		return;	
+	}
+	printf("After Converting : %lld", b);
+}
+
+void hexa(char n[], char conversionType) {
+	long long int a, b, c, d, len;
+	char t[100];
+	strcpy(t, n);
+	len = strlen(t);
+	a = 0;
+	b = 0;
+	c = 1;
+	if(conversionType == 'd') {
+		while(len--) {
+			if((t[len] >= 'A' && t[len] <= 'F') || (t[len] >= 'a' && t[len] <= 'f'))
+				a = t[len] - 55;	
+			else 
+				a = t[len] - 48;
+			b += a * c;
+			c *= 16;
+		}
+	} else if(conversionType == 'b') {
+		while(len--) {
+			if((t[len] >= 'A' && t[len] <= 'F') || (t[len] >= 'a' && t[len] <= 'f'))
+				d = t[len] - 55;	
+			else 
+				d = t[len] - 48;
+			while(d) {
+				a = d % 2;
+				b += a * c;
+				//printf("\n%lld %lld %lld %lld ", a, d % 2, d, b);
+				c *= 10;
+				d /= 2;
+			}
+		}
+	} else if(conversionType == 'o') {
+		while(len--) {
+			if((t[len] >= 'A' && t[len] <= 'F') || (t[len] >= 'a' && t[len] <= 'f'))
+				a = t[len] - 55;	
+			else 
+				a = t[len] - 48;
+			b += a * c;
+			//printf("\n%lld %lld ", a, b);
+			c *= 16;
+		}
+		d = b;
+		a = 0;
+		b = 0;
+		c = 1;
+		while(d) {
+			a = d % 8;
+			b += a * c;
+			// printf("\n%lld %lld %lld %lld ", a, d % 8, d, b);
+			c *= 10;
+			d /= 8;
+		}
+	}
+	printf("After Converting : %lld", b);
+}
+
+char getType() {
+	int c;
+	printf("1.Decimal\n2.HexaDecimal\n3.Octa\n4.Binary\nEnter your choice:\n");
+	scanf("%d\n", &c);
+	switch(c) {
+		case 1 : 
+			return 'd';
+		case 2 : 
+			return 'h';
+		case 3 : 
+			return 'o';
+		case 4 : 
+			return 'b';
+		default : 
+			printf("Enter Valid type....");
+			getType();
+	}
+}
+
+int main(void) {
+	char inputType, conversionType, n[100];
+	printf("Enter input:\n");
+	scanf("%s\n", n);
+	printf("Enter type of input\n");
+	inputType = getType();
+	printf("Enter conversion type\n");
+	conversionType = getType();
+	//printf("%s %c %c", n, inputType, conversionType);
+	if(inputType == 'd')
+		decimal(n, conversionType);
+	else if(inputType == 'b')
+		binary(n, conversionType);
+	else if(inputType == 'o')
+		octa(n, conversionType);
+	else if(inputType == 'h')
+		hexa(n, conversionType);
+	return 0;
+}
