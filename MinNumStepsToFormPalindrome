@@ -1,0 +1,20 @@
+// Complete the findMinReplacements function below.
+int findMinReplacements(char* inputString) {
+    int len = strlen(inputString), count = 0, max = 0, flag = 0;
+    for(int subLen = 0; subLen < len; subLen++) {
+        for(int itr = 0; itr < len - subLen; itr++) {
+            flag = 1;  
+            for(int itr1 = itr, itr2 = itr + subLen; itr1 < itr2; itr1++, itr2--) {
+                if(inputString[itr1] != inputString[itr2]) {
+                    flag = 0;
+                    break;
+                }
+            }
+            if(flag) {
+                max = subLen;
+                break;
+            }
+        }
+    }
+    return len-max-1;
+}
