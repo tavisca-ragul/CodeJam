@@ -1,0 +1,14 @@
+// Complete the waitingTime function below.
+long waitingTime(int tickets_count, int* inputArray, int ticketIndex) {
+    long int countSteps = 0;
+    for(int itr = 0; itr < tickets_count; itr++) {
+		if(inputArray[itr] >= inputArray[ticketIndex]) {//printf("%d ", inputArray[itr]);
+			countSteps += inputArray[ticketIndex];
+			if((itr > ticketIndex) || (inputArray[itr] == inputArray[ticketIndex] && itr > ticketIndex))
+				countSteps--;
+		}
+		else
+			countSteps += inputArray[itr];
+	}
+    return countSteps;
+}
