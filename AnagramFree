@@ -1,0 +1,73 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Codejam
+{
+    class Anagrams
+    {
+        
+
+        int GetMaximumSubset(string[] words)
+        {
+            int wordsLength = words.Length, itr = 0, itr1, itr2, itr3, anagramsCount = 0, length;
+            int[] wordValues = new int[wordsLength];
+            int[] pairMatched = new int[wordsLength];
+            foreach (string word in words)
+            {
+                wordValues[itr] = 0;
+                pairMatched[itr] = 0;
+                foreach (char letter in word)
+                {
+                    wordValues[itr] += letter;
+                }
+                //Console.WriteLine(wordValues[itr]);
+                itr++;
+            }
+            for(itr = 0; itr < wordsLength; itr++)
+            {
+                for(itr1 = itr + 1; pairMatched[itr] != 1 && itr1 < wordsLength; itr1++)
+                {
+                    if(pairMatched[itr1] != 1 && wordValues[itr] == wordValues[itr1] && words[itr].Length == words[itr1].Length)
+                    {
+                        char[] word1 = words[itr].ToCharArray();
+                        Array.Sort(word1);
+                        char[] word2 = words[itr1].ToCharArray();
+                        Array.Sort(word2);
+                        length = words[itr].Length;
+                        int anagram = 1;
+                        for (itr2 = 0, itr3 = 0; itr2 < length; itr2++, itr3++)
+                        {
+                            if (word1[itr2] != word2[itr3])
+                                anagram = 0;
+                        }
+                        if(anagram == 1)
+                        {
+                            anagramsCount++;
+                            //Console.WriteLine(itr + " " + itr1 + " " + anagramsCount);
+                            wordValues[itr1] = -1;
+                            pairMatched[itr1] = 1;
+                        }
+                    }
+                }
+            }
+            return wordsLength - anagramsCount;
+        }
+
+        #region Testing code Do not change
+        public static void Main(String[] args)
+        {
+            String input = Console.ReadLine();
+            Anagrams anagramSolver = new Anagrams();
+            do
+            {
+                string[] words = input.Split(',');
+                Console.WriteLine(anagramSolver.GetMaximumSubset(words));
+                input = Console.ReadLine();
+            } while (input != "-1");
+        }
+        #endregion
+    }
+}
