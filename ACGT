@@ -1,0 +1,62 @@
+int MinChanges(int maxPeriod, string[] acgt)
+{
+    int stringLength, minValue = int.MaxValue;
+    String ACGT = "";
+    foreach (String eachACGT in acgt)
+        ACGT = String.Concat(acgt);
+    stringLength = ACGT.Length;
+    do
+    {
+        int localMin = checkAndreturn(maxPeriod, ACGT);
+        minValue = (minValue < localMin) ? minValue : localMin;
+    } while (--maxPeriod > 0);
+    return minValue;
+}
+
+public int checkAndreturn(int period, String acgt)
+{
+    int len = acgt.Length;
+    period = (period > len) ? len : period;
+    int[,] arr = new int[period, 4];
+    for (int i = 0; i < period; i++)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            arr[i, j] = 0;
+        }
+    }
+    for (int i = 0; i < len; i++)
+    {
+        int currentIndex = (i % period), k = 0;
+        if (acgt[i] == 'A')
+            k = 0;
+        else if (acgt[i] == 'C')
+            k = 1;
+        else if (acgt[i] == 'G')
+            k = 2;
+        else if (acgt[i] == 'T')
+            k = 3;
+
+        if (arr[currentIndex, k] == 0)
+        {
+            arr[currentIndex, k] = 1;
+        }
+        else
+        {
+            arr[currentIndex, k]++;
+        }
+    }
+    int countVal = 0;
+    for (int i = 0; i < period; i++)
+    {
+        int maxValue = 0;
+        int maxVal = (len / period) + ((len % period) >= (i + 1) ? 1 : 0);
+        for (int j = 0; j < 4; j++)
+        {
+            int localVal = arr[i,j];
+            maxValue = (maxValue > localVal) ? maxValue : localVal;
+        }
+        countVal += (maxVal - maxValue);
+    }
+    return countVal;
+}
