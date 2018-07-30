@@ -1,0 +1,36 @@
+long SmallestNonPrime(int n)
+{
+    //Your code goes here
+    long[] primes = new long[n+2];
+    long itr, number = 3, primeSize = 1, isPrime;
+    primes[0] = 2;
+    for (itr = 1; primeSize <= n; itr += 2)
+    {
+        isPrime = checkPrime(number);
+        if (isPrime == 1)
+            primes[primeSize++] = number;
+        number++;
+    }
+
+    return primes[primeSize - 1] * primes[primeSize - 1];
+}
+
+
+int checkPrime(long number)
+{
+    if (number % 2 == 0)
+        return 0;
+
+    long divisor, limit = (long)Math.Floor(Math.Sqrt(number));
+    for (divisor = 3; divisor <= limit; divisor += 2)
+    {
+        //Console.WriteLine(number + " " + divisor);
+        if (number % divisor == 0)
+        {
+            //Console.WriteLine(number + " % " + divisor);
+            return 0;
+        }
+
+    }
+    return 1;
+}
